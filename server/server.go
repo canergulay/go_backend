@@ -7,7 +7,8 @@ import (
 )
 
 func Run() {
+	//routes
 	r := gin.Default()
 	r.GET("/", landing.MainRouter)
-	r.Run(":80") //
+	r.Run(":80")
 }
