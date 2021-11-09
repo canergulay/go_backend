@@ -17,6 +17,7 @@ func InitPostgreSQL() {
 		fmt.Println("wE GOT AA!")
 	}
 	connection = db
+
 }
 
 func GetPostgresConnection() *gorm.DB {

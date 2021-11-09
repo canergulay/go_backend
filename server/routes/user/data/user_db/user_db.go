@@ -3,7 +3,6 @@ package user_db
 import (
 	"backend/config/pg_manager"
 	"backend/server/routes/user/data/user_model"
-	"fmt"
 )
 
 func AutoMigrate() {
@@ -11,13 +10,9 @@ func AutoMigrate() {
 	db.AutoMigrate(&user_model.User{})
 }
 
-func CheckIfUserExists(mail string) {
+func CheckIfUserExists(mail string) bool {
+	var user user_model.User
 	db := pg_manager.GetPostgresConnection()
-	user := db.First(&user_model.User{Mail: mail})
-	if user != nil {
-		fmt.Println("yeah we found it!")
-	} else {
-		fmt.Println("no such user!")
-	}
-
+	result := db.Where("mail = ?", mail).First(&user)
+	return result.Error == nil
 }
