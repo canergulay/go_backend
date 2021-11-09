@@ -2,7 +2,9 @@ package user_db
 
 import (
 	"backend/config/pg_manager"
+	pw_hasher "backend/server/routes/user/data/pw_hasher"
 	"backend/server/routes/user/data/user_model"
+	"fmt"
 )
 
 func AutoMigrate() {
@@ -15,4 +17,22 @@ func CheckIfUserExists(mail string) bool {
 	db := pg_manager.GetPostgresConnection()
 	result := db.Where("mail = ?", mail).First(&user)
 	return result.Error == nil
+}
+
+func RegisterUser(mail string, username string, password string) (bool, error) {
+	hashedPasword, err := pw_hasher.HashMyPassword(password)
+	if err != nil {
+		return false, err
+	}
+	userToRegister := user_model.User{Username: username, Mail: mail, Password: hashedPasword}
+	db := pg_manager.GetPostgresConnection()
+	result := db.Create(&userToRegister)
+	if result.Error != nil {
+		fmt.Println("we got a problem")
+		fmt.Println(result.Error)
+		return false, result.Error
+
+	}
+	return true, nil
+
 }

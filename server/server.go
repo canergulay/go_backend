@@ -14,5 +14,6 @@ func Run() {
 	r := gin.Default()
 	r.GET("/", landing.MainRouter)
 	r.POST("/checkuser", user.CheckUser)
+	r.POST("/register", user.RegisterUser)
 	r.Run(":80")
 }
