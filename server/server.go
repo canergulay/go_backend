@@ -15,5 +15,6 @@ func Run() {
 	r.GET("/", landing.MainRouter)
 	r.POST("/checkuser", user.CheckUser)
 	r.POST("/register", user.RegisterUser)
+	r.POST("/login", user.LoginUser)
 	r.Run(":80")
 }

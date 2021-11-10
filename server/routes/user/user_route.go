@@ -17,6 +17,11 @@ type RegisterRequestBody struct {
 	Password string `json:"password"`
 }
 
+type LoginRequestBody struct {
+	Mail     string `json:"email"`
+	Password string `json:"password"`
+}
+
 func CheckUser(c *gin.Context) {
 
 	var jsonBody RequestBody
@@ -43,4 +48,11 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{"isRegistrationCompleted": registrationCompleted})
+}
+
+func LoginUser(c *gin.Context) {
+	var jsonBody LoginRequestBody
+	c.BindJSON(&jsonBody)
+	result := userdb.LoginUser(jsonBody.Mail, jsonBody.Password)
+	c.JSON(200, gin.H{"status": result})
 }

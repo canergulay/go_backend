@@ -19,6 +19,20 @@ func CheckIfUserExists(mail string) bool {
 	return result.Error == nil
 }
 
+func LoginUser(mail string, password string) int {
+	var user user_model.User
+	db := pg_manager.GetPostgresConnection()
+	result := db.Where("mail = ?", mail).First(&user)
+	if result.Error != nil {
+		return NotAnAccount
+	}
+	isPaswordsMatched := pw_hasher.ComparePasswords(user.Password, password)
+	if isPaswordsMatched {
+		return Succes
+	}
+	return WrongPass
+}
+
 func RegisterUser(mail string, username string, password string) (bool, error) {
 	hashedPasword, err := pw_hasher.HashMyPassword(password)
 	if err != nil {
@@ -36,3 +50,9 @@ func RegisterUser(mail string, username string, password string) (bool, error) {
 	return true, nil
 
 }
+
+const (
+	Succes int = iota
+	WrongPass
+	NotAnAccount
+)
