@@ -42,17 +42,18 @@ func RegisterUser(c *gin.Context) {
 	var jsonBody RegisterRequestBody
 	c.BindJSON(&jsonBody)
 
-	registrationCompleted, err := userdb.RegisterUser(jsonBody.Mail, jsonBody.Username, jsonBody.Password)
+	registerModel, err := userdb.RegisterUser(jsonBody.Mail, jsonBody.Username, jsonBody.Password)
 	if err != nil {
 		c.JSON(500, gin.H{"isRegistrationCompleted": false})
 		return
 	}
-	c.JSON(200, gin.H{"isRegistrationCompleted": registrationCompleted})
+	c.JSON(200, registerModel)
 }
 
 func LoginUser(c *gin.Context) {
 	var jsonBody LoginRequestBody
 	c.BindJSON(&jsonBody)
 	result := userdb.LoginUser(jsonBody.Mail, jsonBody.Password)
-	c.JSON(200, gin.H{"status": result})
+	fmt.Println(result)
+	c.JSON(200, result)
 }
