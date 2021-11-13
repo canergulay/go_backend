@@ -2,6 +2,7 @@ package server
 
 import (
 	landing "backend/server/routes/landing"
+	searchcourse "backend/server/routes/search_course"
 	user "backend/server/routes/user"
 	"backend/server/routes/user/data/user_db"
 
@@ -16,5 +17,6 @@ func Run() {
 	r.POST("/checkuser", user.CheckUser)
 	r.POST("/register", user.RegisterUser)
 	r.POST("/login", user.LoginUser)
+	r.POST("/search", searchcourse.SearchCourse)
 	r.Run(":80")
 }
