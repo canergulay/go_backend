@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -39,7 +40,7 @@ func getRequestInfo(text string) ([]map[string]string, string) {
 
 	headers := make([]map[string]string, 1)
 	headerOne := make(map[string]string)
-	headerOne["Authorization"] = "Basic TkNQczRDMUpBMGFRamlUOEhlRWJtbDdWT3hpMlhKRE5CRnczc292UzpGbU5nVG9PUzBmbzFyZ1Z4dW5DN3l3TmFmMVZlVHdGU2JYeWNnZzNPVFA3QUk4R3d6WlZmdmEwQjVpcDkzQ24wV1p1YlpmTUlGMzc2TzdmZ3dLRXVjMGZkUXNORGNZOXN5ZVh0YkpIYXhzc2s3MXpqeXJCbWUyTWNtSHQ0YVcyNA==A"
+	headerOne["Authorization"] = os.Getenv("UDEMY_API_KEY")
 	headers[0] = headerOne
 
 	return headers, url
