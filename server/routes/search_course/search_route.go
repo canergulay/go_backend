@@ -19,6 +19,7 @@ func SearchCourse(c *gin.Context) {
 	fmt.Println(body, "body burada")
 	if body.Source == 0 {
 		result := data.SearchCourseUdemy(body.Text)
+
 		c.JSON(200, result)
 	}
 }

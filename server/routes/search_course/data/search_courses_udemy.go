@@ -2,29 +2,36 @@ package data
 
 import (
 	httprequester "backend/global/http_requester"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
 )
 
-func SearchCourseUdemy(text string) map[string]interface{} {
+func SearchCourseUdemy(text string) ParsedHttpMapModel {
+	var returnObject ParsedHttpMapModel
 	body := strings.NewReader("")
 	headers, url := getRequestInfo(text)
 
 	resp, err := httprequester.CreateReqestAndDo("GET", url, body, headers)
-
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	var result map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&result)
+	defer resp.Body.Close()
 
 	fmt.Println("buradayım")
+
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(resp.Body)
+	if err := json.Unmarshal(buf.Bytes(), &returnObject); err != nil {
+		panic(err)
+	}
+	fmt.Println(buf.Bytes())
+	fmt.Println(returnObject)
 	// text is nothing but the course name
 
-	return result
+	return returnObject
 }
 
 func getRequestInfo(text string) ([]map[string]string, string) {
@@ -39,22 +46,23 @@ func getRequestInfo(text string) ([]map[string]string, string) {
 }
 
 type ParsedHttpMapModel struct {
-	aggregations string   `json:aggregations`
-	results      []Course `json:results`
+	Aggregations []interface{} `json:"aggregations"`
+	Results      []Course      `json:"results"`
 }
 
-type Course struct {
-	title       string      `json:title`
-	headline    string      `json:headline`
-	image       string      `json:image_240x135`
-	url         string      `json:url`
-	instructors []Insructor `json:visible_instructors`
+type Course struct { //if you want your fields to also be in the lowercase , cover all ofthem within quotation marks.
+	ID          int         `json:"id"`
+	Title       string      `json:"title"`
+	Headline    string      `json:"headline"`
+	Image       string      `json:"image_480x270"` // IF YOU HAVE HYPEN OR UNDERSCORE WITHIN A FIELD, JUST USE QUATATION MARKS TO INVOLVE FIELD PROPERLY
+	Url         string      `json:"url"`
+	Instructors []Insructor `json:"visible_instructors"` // SAME SHIT HAPPENS HERE, FIELDS WERE EMPTY BEFORE QUATATION MARKS...
 }
 
 type Insructor struct {
-	displayname string `json:display_name`
-	name        string `json:name`
-	image       string `json:image_100x100`
+	Displayname string `json:"display_name"` // AGAIN QUOTATION MARKS!
+	Name        string `json:"name"`
+	Image       string `json:"image_100x100"`
 }
 
 /*
