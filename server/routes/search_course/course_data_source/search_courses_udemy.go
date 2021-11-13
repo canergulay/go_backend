@@ -4,7 +4,6 @@ import (
 	httprequester "backend/global/http_requester"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -21,15 +20,11 @@ func SearchCourseUdemy(text string) ParsedHttpSimplifiedMapModel {
 	}
 	defer resp.Body.Close()
 
-	fmt.Println("buradayım")
-
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 	if err := json.Unmarshal(buf.Bytes(), &returnObject); err != nil {
 		panic(err)
 	}
-	fmt.Println(buf.Bytes())
-	fmt.Println(returnObject)
 	// text is nothing but the course name
 
 	return parsedModelSimplifier(returnObject)
