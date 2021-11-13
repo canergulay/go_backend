@@ -1,7 +1,7 @@
 package searchcourse
 
 import (
-	"backend/server/routes/search_course/data"
+	"backend/server/routes/search_course/course_data_source"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +18,7 @@ func SearchCourse(c *gin.Context) {
 
 	fmt.Println(body, "body burada")
 	if body.Source == 0 {
-		result := data.SearchCourseUdemy(body.Text)
+		result := course_data_source.SearchCourseUdemy(body.Text)
 
 		c.JSON(200, result)
 	}

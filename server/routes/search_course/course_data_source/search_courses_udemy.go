@@ -1,4 +1,4 @@
-package data
+package course_data_source
 
 import (
 	httprequester "backend/global/http_requester"
@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func SearchCourseUdemy(text string) ParsedHttpMapModel {
+func SearchCourseUdemy(text string) ParsedHttpSimplifiedMapModel {
 	var returnObject ParsedHttpMapModel
 	body := strings.NewReader("")
 	headers, url := getRequestInfo(text)
@@ -32,7 +32,7 @@ func SearchCourseUdemy(text string) ParsedHttpMapModel {
 	fmt.Println(returnObject)
 	// text is nothing but the course name
 
-	return returnObject
+	return parsedModelSimplifier(returnObject)
 }
 
 func getRequestInfo(text string) ([]map[string]string, string) {
@@ -46,8 +46,36 @@ func getRequestInfo(text string) ([]map[string]string, string) {
 	return headers, url
 }
 
+func parsedModelSimplifier(modelToSimplify ParsedHttpMapModel) ParsedHttpSimplifiedMapModel {
+	// I EXPECTED AGGREGATION INDEX TO BE 3, SO I WILL DEEM IT IN THAT WAY
+	// IF NOT, I WILL SIMPLY ITERATE THROUGH AGGREGATIONS AND FIND THE AGGREGATION WITH THE ID 3
+
+	aggregation := modelToSimplify.Aggregations[3]
+	var aggregationIndex int
+
+	if aggregation.Id == "language" {
+		aggregationIndex = 3
+	} else {
+		for index, agg := range modelToSimplify.Aggregations {
+			if agg.Id == "language" {
+				aggregationIndex = index
+				break
+			}
+
+		}
+	}
+	return ParsedHttpSimplifiedMapModel{
+		Languages: modelToSimplify.Aggregations[aggregationIndex],
+		Results:   modelToSimplify.Results}
+}
+
+type ParsedHttpSimplifiedMapModel struct {
+	Languages Aggregation `json:"languages"`
+	Results   []Course    `json:"results"`
+}
+
 type ParsedHttpMapModel struct {
-	Aggregations []interface{} `json:"aggregations"`
+	Aggregations []Aggregation `json:"aggregations"`
 	Results      []Course      `json:"results"`
 }
 
@@ -66,10 +94,14 @@ type Insructor struct {
 	Image       string `json:"image_100x100"`
 }
 
-/*
-func parseResponseBodyToModel(body map[string]interface{}) ParsedHttpMapModel {
-	aggregations := body["aggregations"]
-	results := body["results"]
-	return ParsedHttpMapModel{Aggregations: aggregations.([]map[string]interface{}), Results: results.([]map[string]interface{})}
-
-}*/
+type Aggregation struct {
+	Id      string   `json:"id"`
+	Options []Option `json:"options"`
+	Title   string   `json:"title"`
+}
+type Option struct {
+	Count int    `json:"count"`
+	Key   string `json:"key"`
+	Title string `json:"title"`
+	Value string `json:"value"`
+}
