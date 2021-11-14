@@ -2,19 +2,26 @@ package course_data_source
 
 import (
 	httprequester "backend/global/http_requester"
+	"backend/global/utils"
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 )
 
-func SearchCourseUdemy(text string) ParsedHttpSimplifiedMapModel {
+func SearchCourseUdemy(text string) (ParsedHttpSimplifiedMapModel, error) {
+
+	parsedString := utils.StringSpaceConditioner(text, "+")
+
 	var returnObject ParsedHttpMapModel
 	body := strings.NewReader("")
-	headers, url := getRequestInfo(text)
+	headers, url := getRequestInfo(parsedString)
 
-	resp, err := httprequester.CreateReqestAndDo("GET", url, body, headers)
+	resp, err := httprequester.CreateReqestAndDo(http.MethodGet, url, body, headers)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -23,11 +30,14 @@ func SearchCourseUdemy(text string) ParsedHttpSimplifiedMapModel {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 	if err := json.Unmarshal(buf.Bytes(), &returnObject); err != nil {
-		panic(err)
+		fmt.Println(err)
+		// circumstance that unmarshal is not successfull means response is not compatible with our expected model
+		// which also implies that our search text didn't match anything at the Udemy side
+		return ParsedHttpSimplifiedMapModel{}, errors.New("unmarshal was not successfull")
 	}
 	// text is nothing but the course name
 
-	return parsedModelSimplifier(returnObject)
+	return parsedModelSimplifier(returnObject), nil
 }
 
 func getRequestInfo(text string) ([]map[string]string, string) {
@@ -45,10 +55,10 @@ func parsedModelSimplifier(modelToSimplify ParsedHttpMapModel) ParsedHttpSimplif
 	// I EXPECTED AGGREGATION INDEX TO BE 3, SO I WILL DEEM IT IN THAT WAY
 	// IF NOT, I WILL SIMPLY ITERATE THROUGH AGGREGATIONS AND FIND THE AGGREGATION WITH THE ID 3
 
-	aggregation := modelToSimplify.Aggregations[3]
+	aggregations := modelToSimplify.Aggregations
 	var aggregationIndex int
 
-	if aggregation.Id == "language" {
+	if len(aggregations) > 3 && aggregations[3].Id == "language" {
 		aggregationIndex = 3
 	} else {
 		for index, agg := range modelToSimplify.Aggregations {

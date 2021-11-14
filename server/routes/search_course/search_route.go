@@ -18,8 +18,15 @@ func SearchCourse(c *gin.Context) {
 
 	fmt.Println(body, "body burada")
 	if body.Source == 0 {
-		result := course_data_source.SearchCourseUdemy(body.Text)
-
-		c.JSON(200, result)
+		result, err := course_data_source.SearchCourseUdemy(body.Text)
+		//if the marshalization process in a erroneus stage,
+		//we'll simply return 404, which means searched text couldn't match with anythings
+		if err != nil {
+			c.JSON(404, errorMessage)
+		} else {
+			c.JSON(200, result)
+		}
 	}
 }
+
+const errorMessage = "your search result was empty"

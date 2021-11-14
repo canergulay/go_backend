@@ -28,7 +28,7 @@ func RequestCreator(method string, url string, body io.Reader, headers []map[str
 
 func CreateReqestAndDo(method string, url string, body io.Reader, headers []map[string]string) (*http.Response, error) {
 	client := http.Client{}
-	httpRequest, err := RequestCreator("GET", url, body, headers)
+	httpRequest, err := RequestCreator(method, url, body, headers)
 	if err != nil {
 		return &http.Response{}, nil
 	}
