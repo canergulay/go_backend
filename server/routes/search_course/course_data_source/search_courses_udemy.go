@@ -13,13 +13,13 @@ import (
 	"strings"
 )
 
-func SearchCourseUdemy(text string) (ParsedHttpSimplifiedMapModel, error) {
+func SearchCourseUdemy(text string, locale string) (ParsedHttpSimplifiedMapModel, error) {
 
 	parsedString := utils.StringSpaceConditioner(text, "+")
 
 	var returnObject ParsedHttpMapModel
 	body := strings.NewReader("")
-	headers, url := getRequestInfo(parsedString)
+	headers, url := getRequestInfo(parsedString, locale)
 
 	resp, err := httprequester.CreateReqestAndDo(http.MethodGet, url, body, headers)
 	if err != nil {
@@ -40,8 +40,8 @@ func SearchCourseUdemy(text string) (ParsedHttpSimplifiedMapModel, error) {
 	return parsedModelSimplifier(returnObject), nil
 }
 
-func getRequestInfo(text string) ([]map[string]string, string) {
-	url := "https://www.udemy.com/api-2.0/courses/?search=" + text
+func getRequestInfo(text string, locale string) ([]map[string]string, string) {
+	url := "https://www.udemy.com/api-2.0/courses/?search=" + text + "&locale=" + locale
 
 	headers := make([]map[string]string, 1)
 	headerOne := make(map[string]string)

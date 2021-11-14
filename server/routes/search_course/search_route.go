@@ -10,6 +10,7 @@ import (
 type SearchCourseBody struct {
 	Source int    `json:"source"` // 0 representing Udemy & 1 representing coursera
 	Text   string `json:"text"`   // whatever input is searched by the user
+	Locale string `json:"locale"`
 }
 
 func SearchCourse(c *gin.Context) {
@@ -18,7 +19,7 @@ func SearchCourse(c *gin.Context) {
 
 	fmt.Println(body, "body burada")
 	if body.Source == 0 {
-		result, err := course_data_source.SearchCourseUdemy(body.Text)
+		result, err := course_data_source.SearchCourseUdemy(body.Text, body.Locale)
 		//if the marshalization process in a erroneus stage,
 		//we'll simply return 404, which means searched text couldn't match with anythings
 		if err != nil {
