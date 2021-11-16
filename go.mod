@@ -4,9 +4,9 @@ go 1.17
 
 require (
 	github.com/gin-gonic/gin v1.7.4
-	golang.org/x/crypto v0.0.0-20211108221036-ceb1ce70b4fa
-	gorm.io/driver/postgres v1.2.1
-	gorm.io/gorm v1.22.2
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+	gorm.io/driver/postgres v1.2.2
+	gorm.io/gorm v1.22.3
 )
 
 require (

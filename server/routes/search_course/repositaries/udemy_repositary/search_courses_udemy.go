@@ -1,8 +1,9 @@
-package course_data_source
+package udemy_repositary
 
 import (
 	httprequester "backend/global/http_requester"
 	"backend/global/utils"
+	"backend/server/routes/search_course/models/udemy_models"
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -13,11 +14,11 @@ import (
 	"strings"
 )
 
-func SearchCourseUdemy(text string, locale string) (ParsedHttpSimplifiedMapModel, error) {
+func SearchCourseUdemy(text string, locale string) (udemy_models.ParsedHttpSimplifiedMapModel, error) {
 
 	parsedString := utils.StringSpaceConditioner(text, "+")
 
-	var returnObject ParsedHttpMapModel
+	var returnObject udemy_models.ParsedHttpMapModel
 	body := strings.NewReader("")
 	headers, url := getRequestInfo(parsedString, locale)
 
@@ -33,7 +34,7 @@ func SearchCourseUdemy(text string, locale string) (ParsedHttpSimplifiedMapModel
 		fmt.Println(err)
 		// circumstance that unmarshal is not successfull means response is not compatible with our expected model
 		// which also implies that our search text didn't match anything at the Udemy side
-		return ParsedHttpSimplifiedMapModel{}, errors.New("unmarshal was not successfull")
+		return udemy_models.ParsedHttpSimplifiedMapModel{}, errors.New("unmarshal was not successfull")
 	}
 	// text is nothing but the course name
 
@@ -51,7 +52,7 @@ func getRequestInfo(text string, locale string) ([]map[string]string, string) {
 	return headers, url
 }
 
-func parsedModelSimplifier(modelToSimplify ParsedHttpMapModel) (ParsedHttpSimplifiedMapModel, error) {
+func parsedModelSimplifier(modelToSimplify udemy_models.ParsedHttpMapModel) (udemy_models.ParsedHttpSimplifiedMapModel, error) {
 	// I EXPECTED AGGREGATION INDEX TO BE 3, SO I WILL DEEM IT IN THAT WAY
 	// IF NOT, I WILL SIMPLY ITERATE THROUGH AGGREGATIONS AND FIND THE AGGREGATION WITH THE ID 3
 	fmt.Println(modelToSimplify)
@@ -71,55 +72,18 @@ func parsedModelSimplifier(modelToSimplify ParsedHttpMapModel) (ParsedHttpSimpli
 		}
 	}
 
-	var returnModel ParsedHttpSimplifiedMapModel
+	var returnModel udemy_models.ParsedHttpSimplifiedMapModel
 	var error error
 
 	if aggregationIndex >= 0 {
-		returnModel = ParsedHttpSimplifiedMapModel{
+		returnModel = udemy_models.ParsedHttpSimplifiedMapModel{
 			Languages: modelToSimplify.Aggregations[aggregationIndex],
 			Results:   modelToSimplify.Results}
 		error = nil
 	} else {
-		returnModel = ParsedHttpSimplifiedMapModel{}
+		returnModel = udemy_models.ParsedHttpSimplifiedMapModel{}
 		error = errors.New("couldn't find anything")
 	}
 
 	return returnModel, error
-}
-
-type ParsedHttpSimplifiedMapModel struct {
-	Languages Aggregation `json:"languages"`
-	Results   []Course    `json:"results"`
-}
-
-type ParsedHttpMapModel struct {
-	Aggregations []Aggregation `json:"aggregations"`
-	Results      []Course      `json:"results"`
-}
-
-type Course struct { //if you want your fields to also be in the lowercase , cover all ofthem within quotation marks.
-	ID          int         `json:"id"`
-	Title       string      `json:"title"`
-	Headline    string      `json:"headline"`
-	Image       string      `json:"image_480x270"` // IF YOU HAVE HYPEN OR UNDERSCORE WITHIN A FIELD, JUST USE QUATATION MARKS TO INVOLVE FIELD PROPERLY
-	Url         string      `json:"url"`
-	Instructors []Insructor `json:"visible_instructors"` // SAME SHIT HAPPENS HERE, FIELDS WERE EMPTY BEFORE QUATATION MARKS...
-}
-
-type Insructor struct {
-	Displayname string `json:"display_name"` // AGAIN QUOTATION MARKS!
-	Name        string `json:"name"`
-	Image       string `json:"image_100x100"`
-}
-
-type Aggregation struct {
-	Id      string   `json:"id"`
-	Options []Option `json:"options"`
-	Title   string   `json:"title"`
-}
-type Option struct {
-	Count int    `json:"count"`
-	Key   string `json:"key"`
-	Title string `json:"title"`
-	Value string `json:"value"`
 }

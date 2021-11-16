@@ -1,7 +1,7 @@
 package searchcourse
 
 import (
-	"backend/pkg/routes/search_course/course_data_source"
+	"backend/server/routes/search_course/repositaries/udemy_repositary"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func SearchCourse(c *gin.Context) {
 
 	fmt.Println(body, "body burada")
 	if body.Source == 0 {
-		result, err := course_data_source.SearchCourseUdemy(body.Text, body.Locale)
+		result, err := udemy_repositary.SearchCourseUdemy(body.Text, body.Locale)
 		//if the marshalization process in a erroneus stage,
 		//we'll simply return 404, which means searched text couldn't match with anythings
 		if err != nil {

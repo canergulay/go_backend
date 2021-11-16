@@ -1,4 +1,4 @@
-package usser_model
+package user_model
 
 type User struct {
 	ID                 int    `gorm:"primaryKey;AUTO_INCREMENT"`
