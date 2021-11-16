@@ -3,7 +3,7 @@ package main
 import (
 	env "backend/config/env"
 	pg_manager "backend/config/pg_manager"
-	server "backend/server"
+	server "backend/pkg"
 )
 
 func main() {

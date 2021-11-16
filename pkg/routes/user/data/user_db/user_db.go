@@ -2,8 +2,8 @@ package user_db
 
 import (
 	"backend/config/pg_manager"
-	pw_hasher "backend/server/routes/user/data/pw_hasher"
-	"backend/server/routes/user/data/user_model"
+	pw_hasher "backend/pkg/routes/user/data/pw_hasher"
+	"backend/pkg/routes/user/data/user_model"
 	"errors"
 	"fmt"
 )

@@ -26,7 +26,7 @@ func SearchCourseUdemy(text string, locale string) (ParsedHttpSimplifiedMapModel
 		log.Fatalln(err)
 	}
 	defer resp.Body.Close()
-
+	fmt.Println(resp.StatusCode)
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 	if err := json.Unmarshal(buf.Bytes(), &returnObject); err != nil {
@@ -37,7 +37,7 @@ func SearchCourseUdemy(text string, locale string) (ParsedHttpSimplifiedMapModel
 	}
 	// text is nothing but the course name
 
-	return parsedModelSimplifier(returnObject), nil
+	return parsedModelSimplifier(returnObject)
 }
 
 func getRequestInfo(text string, locale string) ([]map[string]string, string) {
@@ -51,14 +51,15 @@ func getRequestInfo(text string, locale string) ([]map[string]string, string) {
 	return headers, url
 }
 
-func parsedModelSimplifier(modelToSimplify ParsedHttpMapModel) ParsedHttpSimplifiedMapModel {
+func parsedModelSimplifier(modelToSimplify ParsedHttpMapModel) (ParsedHttpSimplifiedMapModel, error) {
 	// I EXPECTED AGGREGATION INDEX TO BE 3, SO I WILL DEEM IT IN THAT WAY
 	// IF NOT, I WILL SIMPLY ITERATE THROUGH AGGREGATIONS AND FIND THE AGGREGATION WITH THE ID 3
-
+	fmt.Println(modelToSimplify)
 	aggregations := modelToSimplify.Aggregations
-	var aggregationIndex int
+	aggregationIndex := -1
 
 	if len(aggregations) > 3 && aggregations[3].Id == "language" {
+
 		aggregationIndex = 3
 	} else {
 		for index, agg := range modelToSimplify.Aggregations {
@@ -69,9 +70,21 @@ func parsedModelSimplifier(modelToSimplify ParsedHttpMapModel) ParsedHttpSimplif
 
 		}
 	}
-	return ParsedHttpSimplifiedMapModel{
-		Languages: modelToSimplify.Aggregations[aggregationIndex],
-		Results:   modelToSimplify.Results}
+
+	var returnModel ParsedHttpSimplifiedMapModel
+	var error error
+
+	if aggregationIndex >= 0 {
+		returnModel = ParsedHttpSimplifiedMapModel{
+			Languages: modelToSimplify.Aggregations[aggregationIndex],
+			Results:   modelToSimplify.Results}
+		error = nil
+	} else {
+		returnModel = ParsedHttpSimplifiedMapModel{}
+		error = errors.New("couldn't find anything")
+	}
+
+	return returnModel, error
 }
 
 type ParsedHttpSimplifiedMapModel struct {

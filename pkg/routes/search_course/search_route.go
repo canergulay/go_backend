@@ -1,7 +1,7 @@
 package searchcourse
 
 import (
-	"backend/server/routes/search_course/course_data_source"
+	"backend/pkg/routes/search_course/course_data_source"
 	"fmt"
 
 	"github.com/gin-gonic/gin"

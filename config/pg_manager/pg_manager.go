@@ -10,13 +10,14 @@ import (
 
 var connection *gorm.DB
 
-func InitPostgreSQL() {
+func InitPostgreSQL() *gorm.DB {
 	dsn := connectionStringGetter()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Println("wE GOT AA!")
 	}
 	connection = db
+	return connection
 
 }
 

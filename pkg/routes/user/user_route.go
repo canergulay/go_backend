@@ -1,7 +1,7 @@
 package user
 
 import (
-	userdb "backend/server/routes/user/data/user_db"
+	userdb "backend/pkg/routes/user/data/user_db"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
