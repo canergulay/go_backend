@@ -1,4 +1,4 @@
-package groups_model
+package model
 
 import "gorm.io/gorm"
 
@@ -9,6 +9,7 @@ type Group struct {
 	NOP        int    `json:"nop" gorm:"not null"` // number of the people in the group
 	Definition string `json:"definiton" gorm:"not null"`
 	Locale     string `json:"locale" gorm:"not null"`
+	Creator    int    `json:"creator" gorm:"not null"`
 	CreatedAt  int64  `gorm:"autoCreateTime"`
 }
 

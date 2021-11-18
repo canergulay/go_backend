@@ -1,22 +1,22 @@
-package groups_api
+package api
 
 import (
-	"backend/server/routes/groups/groups_model"
-	"backend/server/routes/groups/groups_service"
+	"backend/server/routes/groups/model"
+	"backend/server/routes/groups/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 type GroupApi struct {
-	service *groups_service.GroupService
+	service *service.GroupService
 }
 
-func NewGroupApi(service *groups_service.GroupService) *GroupApi {
+func NewGroupApi(service *service.GroupService) *GroupApi {
 	return &GroupApi{service: service}
 }
 
 func (a *GroupApi) CreateGroupApi(c *gin.Context) {
-	var modelToCreate groups_model.Group
+	var modelToCreate model.Group
 	c.BindJSON(&modelToCreate)
 	_, err := a.service.CreateGroup(modelToCreate)
 	if err != nil {

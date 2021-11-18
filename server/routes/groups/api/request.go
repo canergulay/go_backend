@@ -1,4 +1,4 @@
-package groups_api
+package api
 
 type GetGroupsRequest struct {
 	Locale string `json:"locale"`
