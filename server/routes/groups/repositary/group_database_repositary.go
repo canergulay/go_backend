@@ -2,6 +2,7 @@ package repositary
 
 import (
 	"backend/server/routes/groups/model"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -16,12 +17,15 @@ func NewRepositary(db *gorm.DB) *GroupDatabaseRepositary {
 
 func (r *GroupDatabaseRepositary) Create(group model.Group) (model.Group, error) {
 	err := r.db.Create(&group).Error
-
+	fmt.Println(err)
 	return group, err
 }
 
 func (r *GroupDatabaseRepositary) GetByNameAndLocale(locale string, name string) ([]model.Group, error) {
 	groups := []model.Group{}
-	err := r.db.Where(model.Group{Locale: locale, Name: name}).Find(&groups).Error
+	fmt.Println(name)
+	fmt.Println(locale)
+
+	err := r.db.Where("locale = ? AND name LIKE ?", locale, name).Find(&groups).Error
 	return groups, err
 }

@@ -18,5 +18,6 @@ func (s *GroupService) CreateGroup(group model.Group) (model.Group, error) {
 }
 
 func (s *GroupService) GetGroupsByNameAndLocale(locale string, name string) ([]model.Group, error) {
+
 	return s.dbRP.GetByNameAndLocale(locale, name)
 }

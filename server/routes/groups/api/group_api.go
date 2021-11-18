@@ -22,16 +22,16 @@ func (a *GroupApi) CreateGroupApi(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, "error")
 	}
-	c.JSON(500, modelToCreate)
+	c.JSON(200, modelToCreate)
 }
 
 func (a *GroupApi) GetGroupsByNameAndNameApi(c *gin.Context) {
 	var requestBody GetGroupsRequest
 	c.BindJSON(&requestBody)
 
-	_, err := a.service.GetGroupsByNameAndLocale(requestBody.Locale, requestBody.Name)
+	resp, err := a.service.GetGroupsByNameAndLocale(requestBody.Locale, requestBody.Name)
 	if err != nil {
 		c.JSON(500, "error")
 	}
-	c.JSON(500, requestBody)
+	c.JSON(200, resp)
 }
