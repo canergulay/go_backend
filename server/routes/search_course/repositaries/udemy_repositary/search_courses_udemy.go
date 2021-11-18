@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
-	"strings"
 )
 
 func SearchCourseUdemy(text string, locale string) (udemy_models.ParsedHttpSimplifiedMapModel, error) {
@@ -19,15 +19,15 @@ func SearchCourseUdemy(text string, locale string) (udemy_models.ParsedHttpSimpl
 	parsedString := utils.StringSpaceConditioner(text, "+")
 
 	var returnObject udemy_models.ParsedHttpMapModel
-	body := strings.NewReader("")
+
 	headers, url := getRequestInfo(parsedString, locale)
 
-	resp, err := httprequester.CreateReqestAndDo(http.MethodGet, url, body, headers)
-	if err != nil {
+	resp, err := httprequester.CreateReqestAndDo(http.MethodGet, url, nil, headers)
+	if err != nil || resp.StatusCode != 200 {
 		log.Fatalln(err)
+		return udemy_models.ParsedHttpSimplifiedMapModel{}, errors.New("unexpected error")
 	}
 	defer resp.Body.Close()
-	fmt.Println(resp.StatusCode)
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 	if err := json.Unmarshal(buf.Bytes(), &returnObject); err != nil {
@@ -42,14 +42,20 @@ func SearchCourseUdemy(text string, locale string) (udemy_models.ParsedHttpSimpl
 }
 
 func getRequestInfo(text string, locale string) ([]map[string]string, string) {
-	url := "https://www.udemy.com/api-2.0/courses/?search=" + text + "&locale=" + locale
+
+	apiURL := "https://www.udemy.com/api-2.0/courses/"
+	u, _ := url.Parse(apiURL)
+	values, _ := url.ParseQuery(u.RawQuery)
+	values.Set("search", text)
+	values.Set("locale", locale)
+	u.RawQuery = values.Encode()
 
 	headers := make([]map[string]string, 1)
 	headerOne := make(map[string]string)
 	headerOne["Authorization"] = os.Getenv("UDEMY_API_KEY")
 	headers[0] = headerOne
 
-	return headers, url
+	return headers, u.String()
 }
 
 func parsedModelSimplifier(modelToSimplify udemy_models.ParsedHttpMapModel) (udemy_models.ParsedHttpSimplifiedMapModel, error) {

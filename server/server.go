@@ -2,6 +2,7 @@ package server
 
 import (
 	"backend/config/pg_manager"
+	"backend/server/routes/groups"
 	searchcourse "backend/server/routes/search_course"
 	user "backend/server/routes/user"
 	"backend/server/routes/user/data/user_db"
@@ -29,5 +30,9 @@ func Run() {
 	r.POST("/register", user.RegisterUser)
 	r.POST("/login", user.LoginUser)
 	r.POST("/search", searchcourse.SearchCourse)
+	// FROM NOW ON, WE'LL CONTINUE WITH CLEAN ARCHITECTURE //
+	// THE CODE LINE BELOW WILL REPRESENT A WHOLE PACKAGE
+	//-- INITS ALL ENDPOINTS FOR GROUP ENDPOINT --//
+	groups.InitGroupRouter(r, pg_manager.GetPostgresConnection())
 	r.Run(":80")
 }

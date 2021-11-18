@@ -7,7 +7,7 @@ type User struct {
 	Password           string `gorm:"not null"`
 	Updated            int64  `gorm:"autoUpdateTime:milli"`
 	Created            int64  `gorm:"autoCreateTime"`
-	RegisterMethod     string
-	IsEmailValidated   bool `gorm:"default:false"`
-	IsOnboardCompleted bool `gorm:"default:false"`
+	RegisterMethod     string `gorm:"not null"`
+	IsEmailValidated   bool   `gorm:"default:false"`
+	IsOnboardCompleted bool   `gorm:"default:false"`
 }
