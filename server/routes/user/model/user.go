@@ -1,4 +1,6 @@
-package user_model
+package model
+
+import "gorm.io/gorm"
 
 type User struct {
 	ID                 int    `gorm:"primaryKey;AUTO_INCREMENT"`
@@ -10,4 +12,8 @@ type User struct {
 	RegisterMethod     string `gorm:"not null"`
 	IsEmailValidated   bool   `gorm:"default:false"`
 	IsOnboardCompleted bool   `gorm:"default:false"`
+}
+
+func AutoMigrateUserModel(db *gorm.DB) {
+	db.AutoMigrate(&User{})
 }
