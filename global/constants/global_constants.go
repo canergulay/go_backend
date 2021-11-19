@@ -1,5 +1,4 @@
 package constants
 
-const DefaultImagePath = "sa"
-
 const GroupImagePath = "/images/group"
+const DefaultImagePath = GroupImagePath + "/default%d.jpg"

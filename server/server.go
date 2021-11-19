@@ -30,6 +30,6 @@ func (app *App) Run() {
 	//-- INITS ALL ENDPOINTS FOR GROUP ENDPOINT --//
 	user.InitUserRouter(app.gin, app.pgDB)
 	groups.InitGroupRouter(app.gin, app.pgDB)
-	app.gin.Static(constants.GroupImagePath, fmt.Sprintf(".%s", constants.GroupImagePath))
+	app.gin.Static(constants.GroupImagePath, fmt.Sprintf("../..%s", constants.GroupImagePath))
 	app.gin.Run(":80")
 }
