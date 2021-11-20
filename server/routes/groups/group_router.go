@@ -19,7 +19,7 @@ func InitGroupRouter(r *gin.Engine, db *gorm.DB) {
 	api := api.NewGroupApi(serv)
 
 	// I WONDER IF IT COULD BE MORE CLEAR ?
-	r.GET(groups, api.GetGroupsByNameAndNameApi)
+	r.POST(groups, api.GetGroupsByNameAndLocaleApi)
 	r.POST(create, api.CreateGroupApi)
 
 }

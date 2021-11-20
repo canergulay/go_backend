@@ -28,7 +28,8 @@ func (a *GroupApi) CreateGroupApi(c *gin.Context) {
 	c.JSON(200, modelToCreate)
 }
 
-func (a *GroupApi) GetGroupsByNameAndNameApi(c *gin.Context) {
+func (a *GroupApi) GetGroupsByNameAndLocaleApi(c *gin.Context) {
+
 	var requestBody GetGroupsRequest
 	c.BindJSON(&requestBody)
 
