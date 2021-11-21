@@ -9,7 +9,7 @@ type Group struct {
 	NOP        int    `json:"nop" gorm:"default:0"` // number of the people in the group
 	NOM        int    `json:"nom" gorm:"default:0"` // number of the messages in the group
 	NOT        int    `json:"not" gorm:"default:0"` // number of the topics created within the group
-	Definition string `json:"definiton" gorm:"not null"`
+	Definition string `json:"definition" gorm:"not null"`
 	Locale     string `json:"locale" gorm:"not null"`
 	Creator    int    `json:"creator" gorm:"not null"`
 	CreatedAt  int64  `gorm:"autoCreateTime"`

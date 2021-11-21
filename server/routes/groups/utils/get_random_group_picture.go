@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"backend/global/constants"
 	"fmt"
 	"math/rand"
 )
@@ -10,5 +9,5 @@ import (
 
 func GetRandomDefaulGroupPicture() string {
 	// WE GOT THREE DIFFERENT POSSIBILITIES
-	return fmt.Sprint(constants.DefaultImagePath, rand.Intn(4))
+	return fmt.Sprintf("/images/group/default%d.jpg", rand.Intn(4))
 }

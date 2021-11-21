@@ -3,6 +3,7 @@ package service
 import (
 	"backend/server/routes/groups/model"
 	"backend/server/routes/groups/repositary"
+	"backend/server/routes/groups/utils"
 )
 
 type GroupService struct {
@@ -14,6 +15,8 @@ func NewGroupService(dbRP *repositary.GroupDatabaseRepositary) *GroupService {
 }
 
 func (s *GroupService) CreateGroup(group model.Group) (model.Group, error) {
+	// LETS ATTACH A RANDOM IMAGE BEFORE GROUP IS CREATED
+	group.Image = utils.GetRandomDefaulGroupPicture()
 	return s.dbRP.Create(group)
 }
 

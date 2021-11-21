@@ -3,7 +3,6 @@ package api
 import (
 	"backend/server/routes/groups/model"
 	"backend/server/routes/groups/service"
-	"backend/server/routes/groups/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +18,7 @@ func NewGroupApi(service *service.GroupService) *GroupApi {
 func (a *GroupApi) CreateGroupApi(c *gin.Context) {
 	var modelToCreate model.Group
 	// LETS ADD A RANDOM & DEFAULT THUMBNAIL TO GROUP CREATED
-	modelToCreate.Image = utils.GetRandomDefaulGroupPicture()
+
 	c.BindJSON(&modelToCreate)
 	_, err := a.service.CreateGroup(modelToCreate)
 	if err != nil {
