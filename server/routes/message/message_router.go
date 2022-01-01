@@ -1,6 +1,8 @@
 package message
 
 import (
+	"backend/global/authentication"
+	"backend/server/middlewares"
 	"backend/server/routes/message/messages_api"
 	"backend/server/routes/message/model"
 	"backend/server/routes/message/repositary"
@@ -10,21 +12,16 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitMessageRouter(r *gin.Engine, db *gorm.DB) {
+func InitMessageRouter(r *gin.Engine, db *gorm.DB, jwtManager *authentication.JwtManager) {
 
 	model.InitMessageModel(db)
 	repo := repositary.NewMessageDBRepositary(db)
 	service := service.NewMessageService(repo)
 	api := messages_api.NewMessageApi(service)
-	authorized := r.Group("/")
-	authorized.Use()
-
-	{
-		r.POST(messageNormal, api.CreateNormalMessageApi)
-		r.POST(messageGroup, api.CreateGroupMessageApi)
-		// I WOULD NORMALLY SET THIS ENDPOINT AS A GET METHOD BUT, I GOT A PROBLEM IN CLEINT SIDE WHICH PREVENTS ME SEND BODY USING GET METHOD.
-		r.POST(messageGet, api.GetMessagesApi)
-	}
+	r.POST(messageNormal, middlewares.JwtVerifer(jwtManager), api.CreateNormalMessageApi)
+	r.POST(messageGroup, middlewares.JwtVerifer(jwtManager), api.CreateGroupMessageApi)
+	// I WOULD NORMALLY SET THIS ENDPOINT AS A GET METHOD BUT, I GOT A PROBLEM IN CLEINT SIDE WHICH PREVENTS ME SEND BODY USING GET METHOD.
+	r.POST(messageGet, middlewares.JwtVerifer(jwtManager), api.GetMessagesApi)
 
 }
 

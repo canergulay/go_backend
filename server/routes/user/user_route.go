@@ -6,17 +6,15 @@ import (
 	"backend/server/routes/user/model"
 	"backend/server/routes/user/repositary"
 	"backend/server/routes/user/service"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-func InitUserRouter(r *gin.Engine, db *gorm.DB) {
+func InitUserRouter(r *gin.Engine, db *gorm.DB, jM *authentication.JwtManager) {
 	model.AutoMigrateUserModel(db)
 	repositary := repositary.NewUserRepository(db)
-	jwtManager := &authentication.JwtManager{SecretKey: os.Getenv("JWT_SECRET")}
-	serv := service.NewUserService(repositary, jwtManager)
+	serv := service.NewUserService(repositary, jM)
 	api := api.NewApi(serv)
 
 	r.POST("/checkuser", api.CheckUserApi)

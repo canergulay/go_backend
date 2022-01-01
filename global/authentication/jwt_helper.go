@@ -48,7 +48,7 @@ func (helper JwtManager) JwtSignUpCredentialsCreator(user *model.User) (*JwtSign
 //Will return the user object if token is verified, otherwise will return an indicating error
 func (helper JwtManager) JwtCredentialsVerifier(token string) (*model.User, error) {
 	t, err := jwt.ParseWithClaims(token, &Claimer{}, func(t *jwt.Token) (interface{}, error) {
-		return helper.SecretKey, nil
+		return []byte(helper.SecretKey), nil
 	})
 	if err != nil {
 		return nil, err

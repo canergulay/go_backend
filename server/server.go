@@ -1,6 +1,7 @@
 package server
 
 import (
+	"backend/global/authentication"
 	"backend/global/constants"
 	"backend/server/routes/groups"
 	"backend/server/routes/message"
@@ -13,13 +14,15 @@ import (
 )
 
 type App struct {
-	pgDB *gorm.DB
-	gin  *gin.Engine
+	pgDB       *gorm.DB
+	gin        *gin.Engine
+	jwtManager *authentication.JwtManager
 }
 
-func (app *App) KickASS(pg *gorm.DB, gin *gin.Engine) {
+func (app *App) KickASS(pg *gorm.DB, gin *gin.Engine, jwtManager *authentication.JwtManager) {
 	app.pgDB = pg
 	app.gin = gin
+	app.jwtManager = jwtManager
 	app.Run()
 }
 
@@ -29,9 +32,9 @@ func (app *App) Run() {
 	// FROM NOW ON, WE'LL CONTINUE WITH CLEAN ARCHITECTURE //
 	// THE CODE LINE BELOW WILL REPRESENT A WHOLE PACKAGE
 	//-- INITS ALL ENDPOINTS FOR GROUP ENDPOINT --//
-	user.InitUserRouter(app.gin, app.pgDB)
+	user.InitUserRouter(app.gin, app.pgDB, app.jwtManager)
 	groups.InitGroupRouter(app.gin, app.pgDB)
-	message.InitMessageRouter(app.gin, app.pgDB)
+	message.InitMessageRouter(app.gin, app.pgDB, app.jwtManager)
 	staticPathConfigurations(app.gin)
 	app.gin.Run(":80")
 }
