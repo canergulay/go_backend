@@ -8,6 +8,7 @@ import (
 	searchcourse "backend/server/routes/search_course"
 	"backend/server/routes/user"
 	"fmt"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -17,16 +18,18 @@ type App struct {
 	pgDB       *gorm.DB
 	gin        *gin.Engine
 	jwtManager *authentication.JwtManager
+	logger     *log.Logger
 }
 
-func (app *App) KickASS(pg *gorm.DB, gin *gin.Engine, jwtManager *authentication.JwtManager) {
+func (app *App) KickASS(pg *gorm.DB, gin *gin.Engine, jwtManager *authentication.JwtManager, logger *log.Logger) {
 	app.pgDB = pg
 	app.gin = gin
 	app.jwtManager = jwtManager
-	app.Run()
+	app.logger = logger
+	app.run()
 }
 
-func (app *App) Run() {
+func (app *App) run() {
 
 	app.gin.POST("/search", searchcourse.SearchCourse)
 	// FROM NOW ON, WE'LL CONTINUE WITH CLEAN ARCHITECTURE //
