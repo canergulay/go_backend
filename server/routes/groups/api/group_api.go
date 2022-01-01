@@ -15,6 +15,10 @@ func NewGroupApi(service *service.GroupService) *GroupApi {
 	return &GroupApi{service: service}
 }
 
+func (a *GroupApi) QueryGroupInfo(c *gin.Context) {
+	// TO BE EDITED.
+}
+
 func (a *GroupApi) CreateGroupApi(c *gin.Context) {
 	var modelToCreate model.Group
 	// LETS ADD A RANDOM & DEFAULT THUMBNAIL TO GROUP CREATED

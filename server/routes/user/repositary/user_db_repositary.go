@@ -1,9 +1,9 @@
 package repositary
 
 import (
+	"backend/global/constants"
 	"backend/server/routes/user/model"
 	"backend/server/routes/user/utils"
-	"errors"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -41,24 +41,37 @@ func (r *UserDbRepositary) LoginUser(mail string, password string) model.LoginRe
 }
 
 func (r *UserDbRepositary) RegisterUser(mail string, username string, password string) (model.RegisterResponseModel, error) {
+	fmt.Println("ru1")
+
 	hashedPasword, err := utils.HashMyPassword(password)
+	fmt.Println("ru2")
+
 	if err != nil {
+		fmt.Println(err)
 		return model.RegisterResponseModel{IsRegistrationCompleted: false}, err
-	}
-	loginResponse := r.LoginUser(mail, password)
-	if loginResponse.Status != NotAnAccount {
-		// IF THERE EXIST AN ACCOUNT WITH THAT EMAIL
-		return model.RegisterResponseModel{IsRegistrationCompleted: false}, errors.New(alreadyRegistered)
-	}
-	userToRegister := model.User{Username: username, Mail: mail, Password: hashedPasword, RegisterMethod: "email"}
+
+	} /*
+		loginResponse := r.LoginUser(mail, password)
+		if loginResponse.Status != NotAnAccount {
+			// IF THERE EXIST AN ACCOUNT WITH THAT EMAIL
+			return model.RegisterResponseModel{IsRegistrationCompleted: false}, errors.New(alreadyRegistered)
+		}*/
+	fmt.Println("ru3")
+
+	userToRegister := model.User{Username: username, Mail: mail, Password: hashedPasword, RegisterMethod: "email", Picture: constants.DefaultUserImagePath}
+	fmt.Println("ru4")
 
 	result := r.db.Create(&userToRegister)
+	fmt.Println("ru5")
+
 	if result.Error != nil {
 		fmt.Println("we got a problem")
 		fmt.Println(result.Error)
 		return model.RegisterResponseModel{IsRegistrationCompleted: false}, result.Error
 
 	}
+	fmt.Println("ru6")
+
 	return model.RegisterResponseModel{IsRegistrationCompleted: true, User: userToRegister}, nil
 
 }

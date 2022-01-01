@@ -3,6 +3,7 @@ package server
 import (
 	"backend/global/constants"
 	"backend/server/routes/groups"
+	"backend/server/routes/message"
 	searchcourse "backend/server/routes/search_course"
 	"backend/server/routes/user"
 	"fmt"
@@ -30,6 +31,12 @@ func (app *App) Run() {
 	//-- INITS ALL ENDPOINTS FOR GROUP ENDPOINT --//
 	user.InitUserRouter(app.gin, app.pgDB)
 	groups.InitGroupRouter(app.gin, app.pgDB)
-	app.gin.Static(constants.GroupImagePath, fmt.Sprintf("../..%s", constants.GroupImagePath))
+	message.InitMessageRouter(app.gin, app.pgDB)
+	staticPathConfigurations(app.gin)
 	app.gin.Run(":80")
+}
+
+func staticPathConfigurations(gin *gin.Engine) {
+	gin.Static(constants.GroupImagePath, fmt.Sprintf("../..%s", constants.GroupImagePath))
+	gin.Static(constants.UserImagePath, fmt.Sprintf("../..%s", constants.UserImagePath))
 }

@@ -13,12 +13,15 @@ func NewMessageService(messageRP *repositary.MessageDatabaseRepositary) *Message
 	return &MessageService{messageRP: messageRP}
 }
 
-func (ms *MessageService) CreateMessage(message model.Message) error {
-	_, err := ms.messageRP.Create(message)
+func (ms *MessageService) CreateMessage(m model.MessageRequest) error {
+	msg := model.Message{Message: m.Message, Sender: m.Sender, ChatId: m.ChatId, Image: m.Image}
+	_, err := ms.messageRP.CreateMessage(msg)
 	return err
 }
-func (ms *MessageService) CreateGroupMessage(message model.GroupMessage) error {
-	_, err := ms.messageRP.Create(message)
+func (ms *MessageService) CreateGroupMessage(m model.MessageRequest) error {
+	msg := model.GroupMessage{Message: m.Message, Sender: m.Sender, ChatId: m.ChatId, Image: m.Image}
+
+	_, err := ms.messageRP.CreateGroupMessage(msg)
 	return err
 }
 

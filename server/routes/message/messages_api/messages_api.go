@@ -2,45 +2,51 @@ package messages_api
 
 import (
 	"backend/server/routes/message/service"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
 
 type MessageApi struct {
 	sv *service.MessageService
-	g  *gin.Context
 }
 
-func NewMessageApi(messageService *service.MessageService, g *gin.Context) *MessageApi {
-	return &MessageApi{sv: messageService, g: g}
+func NewMessageApi(messageService *service.MessageService) *MessageApi {
+	return &MessageApi{sv: messageService}
 }
 
-func (a *MessageApi) CreateNormalMessageApi() {
+func (a *MessageApi) CreateNormalMessageApi(c *gin.Context) {
 	var requestBody CreateMessageRequest
-	a.g.BindJSON(&requestBody)
+	c.BindJSON(&requestBody)
 	err := a.sv.CreateMessage(requestBody.Message)
 	if err == nil {
-		a.g.JSON(200, requestBody)
+		c.JSON(200, requestBody)
+		return
 	}
-	a.g.JSON(500, requestBody)
+	c.JSON(500, requestBody)
 }
 
-func (a *MessageApi) CreateGroupMessageApi() {
+func (a *MessageApi) CreateGroupMessageApi(c *gin.Context) {
 	var requestBody CreateGroupMessageRequest
-	a.g.BindJSON(&requestBody)
+	c.BindJSON(&requestBody)
 	err := a.sv.CreateGroupMessage(requestBody.Message)
 	if err == nil {
-		a.g.JSON(200, requestBody)
+		c.JSON(200, requestBody)
+		return
+
 	}
-	a.g.JSON(500, requestBody)
+	c.JSON(500, requestBody)
 }
 
-func (a *MessageApi) GetMessagesApi() {
+func (a *MessageApi) GetMessagesApi(c *gin.Context) {
 	var requestBody GetMessagesRequest
-	a.g.BindJSON(&requestBody)
+	c.BindJSON(&requestBody)
 	messages, err := a.sv.GetMessages(requestBody.ChatId, requestBody.ChatType)
+	fmt.Println("msjes")
+	fmt.Println(messages)
 	if err == nil {
-		a.g.JSON(200, messages)
+		c.JSON(200, messages)
+		return
 	}
-	a.g.JSON(500, messages)
+	c.JSON(500, messages)
 }

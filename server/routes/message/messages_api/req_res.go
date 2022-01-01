@@ -3,11 +3,11 @@ package messages_api
 import "backend/server/routes/message/model"
 
 type CreateMessageRequest struct {
-	Message model.Message `json:"message"`
+	Message model.MessageRequest `json:"message"`
 }
 
 type CreateGroupMessageRequest struct {
-	Message model.GroupMessage `json:"message"`
+	Message model.MessageRequest `json:"message"`
 }
 
 type GetMessagesRequest struct {

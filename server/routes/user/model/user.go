@@ -3,15 +3,16 @@ package model
 import "gorm.io/gorm"
 
 type User struct {
-	ID                 int    `gorm:"primaryKey;AUTO_INCREMENT"`
-	Username           string `gorm:"not null"`
-	Mail               string `gorm:"not null"`
-	Password           string `gorm:"not null"`
-	Updated            int64  `gorm:"autoUpdateTime:milli"`
-	Created            int64  `gorm:"autoCreateTime"`
-	RegisterMethod     string `gorm:"not null"`
-	IsEmailValidated   bool   `gorm:"default:false"`
-	IsOnboardCompleted bool   `gorm:"default:false"`
+	ID                 int    `json:"id" gorm:"primaryKey;AUTO_INCREMENT"`
+	Username           string `json:"username" gorm:"not null"`
+	Mail               string `json:"mail" gorm:"not null"`
+	Picture            string `json:"picture" gorm:"not null"`
+	Password           string `json:"password" gorm:"not null"`
+	Updated            int64  `json:"updatedAt" gorm:"autoUpdateTime:milli"`
+	Created            int64  `json:"createdAt" gorm:"autoCreateTime"`
+	RegisterMethod     string `json:"registermethod" gorm:"not null"`
+	IsEmailValidated   bool   `json:"isEmailValidated" gorm:"default:false"`
+	IsOnboardCompleted bool   `json:"isOnboardCompleted" gorm:"default:false"`
 }
 
 func AutoMigrateUserModel(db *gorm.DB) {

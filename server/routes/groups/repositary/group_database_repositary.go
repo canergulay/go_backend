@@ -27,3 +27,9 @@ func (r *GroupDatabaseRepositary) GetByNameAndLocale(locale string, name string)
 	err := r.db.Order("nop desc").Where("locale = ? AND name ILIKE ?", locale, utils.QueryFormatter(name)).Find(&groups).Error
 	return groups, err
 }
+
+func (r *GroupDatabaseRepositary) FindGroupById(id string) (model.Group, error) {
+	group := model.Group{}
+	err := r.db.Where("id=?", id).Find(&group).Error
+	return group, err
+}

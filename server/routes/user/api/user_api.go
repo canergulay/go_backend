@@ -3,6 +3,7 @@ package api
 import (
 	"backend/server/routes/user/model"
 	"backend/server/routes/user/service"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,7 +12,7 @@ type UserApi struct {
 	service *service.UserLoginRegisterService
 }
 
-func NewService(s *service.UserLoginRegisterService) *UserApi {
+func NewApi(s *service.UserLoginRegisterService) *UserApi {
 	return &UserApi{
 		service: s,
 	}
@@ -27,17 +28,21 @@ func (a *UserApi) LoginApi(c *gin.Context) {
 func (a *UserApi) RegisterApi(c *gin.Context) {
 	var requestBody model.RegisterRequestBody
 	c.BindJSON(&requestBody)
-	registerModel, err := a.service.Register(requestBody.Mail, requestBody.Username, requestBody.Password)
+	registerModelJWTLoaded, err := a.service.Register(requestBody.Mail, requestBody.Username, requestBody.Password)
+	fmt.Println(registerModelJWTLoaded)
 	if err != nil {
 		c.JSON(500, gin.H{"isRegistrationCompleted": false})
 		return
 	}
-	c.JSON(200, registerModel)
+
+	c.JSON(200, registerModelJWTLoaded)
 }
 
 func (a *UserApi) CheckUserApi(c *gin.Context) {
 	var requestBody model.RequestBody
 	c.BindJSON(&requestBody)
 	result := a.service.CheckIfUserExists(requestBody.Mail)
-	c.JSON(200, result)
+	m := make(map[string]bool)
+	m["doesExist"] = result
+	c.JSON(200, m)
 }

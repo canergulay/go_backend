@@ -4,6 +4,7 @@ import (
 	"backend/server/routes/groups/model"
 	"backend/server/routes/groups/repositary"
 	"backend/server/routes/groups/utils"
+	"fmt"
 )
 
 type GroupService struct {
@@ -23,4 +24,29 @@ func (s *GroupService) CreateGroup(group model.Group) (model.Group, error) {
 func (s *GroupService) GetGroupsByNameAndLocale(locale string, name string) ([]model.Group, error) {
 
 	return s.dbRP.GetByNameAndLocale(locale, name)
+}
+
+func (s *GroupService) QueryGroup(id string) (model.GroupQueryResponseModel, error) {
+
+	var doesExist bool
+
+	group, err := s.dbRP.FindGroupById(id)
+
+	if err != nil {
+		doesExist = false
+	} else {
+		doesExist = true
+
+	}
+
+	fmt.Println(err)
+
+	response := model.GroupQueryResponseModel{
+		DoesExist:    doesExist,
+		Group:        group,
+		LastMessages: nil,
+	}
+
+	return response, nil
+
 }

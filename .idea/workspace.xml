@@ -5,7 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cf3f8750-209e-4539-9aa3-8615b78cc21d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/server/routes/search_course/search_route.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/search_course/search_route.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global/constants/global_constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/global/constants/global_constants.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/groups/api/group_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/groups/api/group_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/groups/model/group.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/groups/model/group.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/groups/repositary/group_database_repositary.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/groups/repositary/group_database_repositary.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/groups/service/group_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/groups/service/group_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/message/messages_api/messages_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/message/messages_api/messages_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/message/messages_api/req_res.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/message/messages_api/req_res.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/message/model/message.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/message/model/message.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/message/repositary/message_db_repositary.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/message/repositary/message_db_repositary.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/message/service/message_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/message/service/message_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/user/api/user_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/user/api/user_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/user/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/user/model/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/user/repositary/user_db_repositary.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/user/repositary/user_db_repositary.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +48,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/gopractice" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
