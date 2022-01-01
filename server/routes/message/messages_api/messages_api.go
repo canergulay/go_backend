@@ -1,10 +1,12 @@
 package messages_api
 
 import (
+	"backend/global/logclient"
 	"backend/server/routes/message/service"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type MessageApi struct {
@@ -18,7 +20,7 @@ func NewMessageApi(messageService *service.MessageService) *MessageApi {
 func (a *MessageApi) CreateNormalMessageApi(c *gin.Context) {
 	var requestBody CreateMessageRequest
 	c.BindJSON(&requestBody)
-
+	logclient.Log.WithFields(logrus.Fields{"place": "message/messages_api - CreateNormalMessageApi", "reason": "trial"}).Warn()
 	err := a.sv.CreateMessage(requestBody.Message)
 	if err == nil {
 		c.JSON(200, requestBody)

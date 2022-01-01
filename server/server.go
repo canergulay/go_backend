@@ -21,11 +21,11 @@ type App struct {
 	logger     *log.Logger
 }
 
-func (app *App) KickASS(pg *gorm.DB, gin *gin.Engine, jwtManager *authentication.JwtManager, logger *log.Logger) {
+func (app *App) KickASS(pg *gorm.DB, gin *gin.Engine, jwtManager *authentication.JwtManager) {
 	app.pgDB = pg
 	app.gin = gin
 	app.jwtManager = jwtManager
-	app.logger = logger
+
 	app.run()
 }
 

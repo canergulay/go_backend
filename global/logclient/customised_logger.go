@@ -1,7 +1,7 @@
-package customlogger
+package logclient
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/natefinch/lumberjack"
 )
@@ -14,10 +14,11 @@ var (
 	compress   bool   = true
 )
 
-type CustomLogger *log.Logger
+var Log *log.Logger
 
-func New() CustomLogger {
-	logger := log.Default()
+func InitLogger() {
+
+	logger := log.New()
 	// We will use Lumberjack to utilise our Logger
 	logger.SetOutput(&lumberjack.Logger{
 		Filename:   fileName,
@@ -26,5 +27,6 @@ func New() CustomLogger {
 		MaxAge:     maxAge,
 		Compress:   compress,
 	})
-	return logger
+
+	Log = logger
 }

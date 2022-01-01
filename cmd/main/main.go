@@ -4,7 +4,7 @@ import (
 	env "backend/config/env"
 	pg_manager "backend/config/pg_manager"
 	"backend/global/authentication"
-	"backend/global/customlogger"
+	"backend/global/logclient"
 	server "backend/server"
 	"os"
 
@@ -13,6 +13,7 @@ import (
 
 func main() {
 	env.SetEnvorinmentVariables()
+	logclient.InitLogger()
 	server := server.App{}
-	server.KickASS(pg_manager.InitPostgreSQL(), gin.Default(), &authentication.JwtManager{SecretKey: os.Getenv("JWT_SECRET")}, customlogger.New())
+	server.KickASS(pg_manager.InitPostgreSQL(), gin.Default(), &authentication.JwtManager{SecretKey: os.Getenv("JWT_SECRET")})
 }
